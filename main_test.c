@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main_test.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: micorrei <micorrei@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: micorrei <micorrei@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:22:15 by micorrei          #+#    #+#             */
-/*   Updated: 2025/04/24 13:21:38 by micorrei         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:48:26 by micorrei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* #include "ft_printf.h"
+#include "ft_printf.h"
 #include <stdio.h>
 
 int main(void)
@@ -117,4 +117,4 @@ int main(void)
 	printf("Return values: printf = %d, ft_printf = %d\n", std_ret, ft_ret);
 
     return 0;
-} */
+}
