@@ -18,7 +18,7 @@ int main(void)
     line = get_next_line(fd);
     if (!line)
     {
-        printf("get_next_line returned NULL (probably read() error).\n");
+        printf("get_next_line returned NULL (nothing to read).\n");
         close(fd);
         return (1);
     }
