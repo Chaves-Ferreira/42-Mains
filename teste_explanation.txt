@@ -1,0 +1,87 @@
+Test File	Content	What to Expect
+0. FD that does not exist should return NULL (same output as test6)
+1. simple.txt	Several normal lines	Each get_next_line() returns one line + \n
+2. empty_lines.txt	Some empty lines between text	Empty lines still return "\n" lines
+3. no_final_newline.txt	Line with no final newline (\n)
+4. long_line.txt	Very long single line	Reads across multiple reads if buffer small
+5. only_newlines.txt	Only \n\n\n\n\n (e.g., 7x)	Each get_next_line() returns just "\n"
+6. empty.txt	Totally empty file	Immediately return NULL
+7. huge.txt	Thousands of repeated lines	Stress test memory and leak checking
+8. Multiple long lines (2,500+ characters), 5 lines is exactly 2,500 characters long, followed by a newline
+9. Many short lines (1–3 characters each). A set of 50+ lines, each containing 1 to 3 characters followed by \n
+
+
+Testing
+ex:
+gcc -Wall -Werror -Wextra -D BUFFER_SIZE=32 main.c get_next_line.c get_next_line_utils.c -o test
+(change main for specific test at each time).
+to see the newlines execute ./test with | cat-e
+
+for test 3 no newline then EOF
+printf "This is the only line" > test3.txt
+od -c test3.txt (to confirm no new line)
+should display:
+0000000   T   h   i   s       i   s       t   h   e       o   n   l   y
+0000020       l   i   n   e
+
+and getnextline should print: This is the only line USER@42....
+(so no $ at the end so terminal is stuck to it)
+
+
+
+As the evaluator, you are expected to provide a main which will always check:
+
+    The return value of the get_next_line is NULL in case of error.  [[open a directory for example]]
+    Otherwise, the function returns the line read, always with a \n at the end except if the end of file was reached and does not end with a \n character. [[test 3]]
+
+Test all the possible combinations of the following rules:
+
+    Large BUFFER_SIZE (>1024)
+    Small BUFFER_SIZE (< 8, and 1)
+    BUFFER_SIZE exactly the length of the line to read
+
+    1 byte variant (+/-) between the line and the BUFFER_SIZE
+
+    Read on stdin
+
+    Read from a file
+
+    (Multiple/Single) Long line (2k+ characters) [test 8]
+
+    (Multiple/Single) Short line (< 4 characters, even 1) [test 9]
+
+    (Multiple/Single) Empty line [test 2]
+
+These tests should allow you to assess the robustness of the student's
+get_next_line implementation.
+If there is an error, the evaluation stops here.
+
+
+
+Error management
+
+Carry out AT LEAST the following tests to try to stress the error
+management.
+
+    Pass an arbitrary, invalid file descriptor (e.g., 42) to get_next_line. The function must return NULL. [[test main_invalid_fd]]
+    Check the error returns for read and malloc. If there is an error, the evaluation stops here. You can keep going and discuss the implementation of the code, but the assignment will not be graded.   [[It means: you must go through your own code and manually add proper checks after each call to read() and malloc().]] 
+    [[for read: if (i <= 0) then (free(line); return (NULL);   // on read error (i == -1) or EOF (i == 0)]]
+    [[for malloc, everytime it apears, must have : if (!line); return (NULL)]] 
+
+
+Compilation
+
+It must be possible to compile the project with the usual flags, and with the
+-D BUFFER_SIZE as well.
+The project must compile successfully both with and without this flag, in addition to the
+following flags: -Wall -Wextra -Werror.
+If there is an error, the evaluation stops here.
+You can keep going and discuss the implementation of the code, but the
+assignment will not be graded.
+
+valgrind --leak-check=full --track-origins=yes ./gnl_test
+
+
+
+
+
